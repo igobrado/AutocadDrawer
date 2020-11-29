@@ -1,1 +1,4 @@
-﻿netload Drawer
+﻿netload "Drawer.dll"
+TEST
+zoom
+extents

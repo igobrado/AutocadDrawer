@@ -3,5 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>D:\installs\utility\autocad\AutoCAD 2020\acad.exe</StartProgram>
+    <StartArguments>/nologo /b "D:\dev\private\marko\Drawer\Drawer\start.scr"</StartArguments>
   </PropertyGroup>
 </Project>
