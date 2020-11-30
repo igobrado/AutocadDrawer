@@ -161,39 +161,56 @@ namespace Drawer
             }
         }
         [CommandMethod("DrawPredefined")]
-        public void Test()
+        public void DrawPredefined()
         {
             // TODO: send parameters via cmd arguments
             var lines = Parser.Instance.parse("D:\\dev\\private\\marko\\Drawer\\Drawer\\SvetaNedjelja.txt");
-            if (lines.Count == 0)
-            {
-                return;
-            }
+            lines.RemoveAll(x => x.getFirstCombination() != 11 && x.getFirstCombination() != 12 && x.getFirstCombination() != 13 && x.getFirstCombination() != 14 && x.getFirstCombination() != 15 && x.getFirstCombination() != 16);
 
-            for ( int i = 0; i < lines.Count; ++i)
-            { 
+  
+            for (int i = 0; i < lines.Count; ++i)
+            {
                 List<Point> linesToDraw = new List<Point>();
+                if (lines[i].IsDrawn)
+                {
+                    continue;
+                }
 
                 var firstID = lines[i].getFirstCombination();
                 
-                if (firstID == 11 || firstID == 14 || firstID == 21)
+                bool shouldStop = false;
+                int j = i;
+                while (!shouldStop)
                 {
-                    for (int j = i; j < lines.Count; ++j)
-                    {
-                        if (j == lines.Count)
-                        {
-                            break;
-                        }
+                    if (j == lines.Count)
+                        break;
 
-                        if ((lines[j].getFirstCombination() == firstID) && (lines[j].IsDrawn == false))
+                    if ((!lines[j].IsDrawn && lines[j].getFirstCombination() == firstID ))
+                    {
+                        linesToDraw.Add(new Point(lines[j].Coordinate));
+                        if (lines[j].shouldClose())
+                        { 
+                            lines[j].popCombination();
+                            lines[j].popCombination();
+                            shouldStop = true;
+                        }
+                        else if (lines[j].shouldCloseFirstCombination())
                         {
-                            linesToDraw.Add(new Point(lines[j].Coordinate));
-                            if (lines[j].hasCombination(39))
-                            {
-                                break;
-                            }
+                            lines[j].popCombination();
+                            lines[j].popCombination();
+                            shouldStop = true;
+                        }  
+                        else if (lines[j].Combinations.Count >= 1)
+                        {
+                            lines[j].popCombination();
                         }
                     }
+                    else if(lines[j].hasCombination(firstID))
+                    {
+                        lines[j].erase(firstID);
+                        break;
+                    }
+                    ++j;
                 }
                 drawPolyline(linesToDraw);
             }

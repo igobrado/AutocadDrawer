@@ -1,4 +1,4 @@
-﻿netload "Drawer.dll"
-TEST
+﻿netload "D:\\dev\\private\\marko\\Drawer\\Drawer\\bin\\Debug\Drawer.dll"
+DrawPredefined
 zoom
 extents

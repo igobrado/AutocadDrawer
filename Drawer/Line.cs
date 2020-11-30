@@ -50,7 +50,54 @@ namespace Drawer
             m_FullCode = code;
         }
 
+        public void erase(UInt64 combination)
+        {
+            for (int i = 2; i < m_Combinations.Count; ++i)
+            {
+                if (m_Combinations[i] == 39 && m_Combinations[i-1] == combination)
+                {
+                    m_Combinations.RemoveAt(i);
+                    m_Combinations.RemoveAt(i-1);
+                }
+            }
+        }
 
+        public bool shouldCloseFirstCombination()
+        {
+            if (m_Combinations.Count >= 2)
+            {
+                if (m_Combinations[1] == 39)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        public bool hasCombination(UInt64 combination)
+        {
+            for (int i = 1; i < m_Combinations.Count; ++i)
+            {
+                if (m_Combinations[i] == combination)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool shouldClose()
+        {
+            if (m_Combinations.Count == 2 && m_Combinations[1] == 39)
+            {
+                m_IsDrawn = true;
+                return true;
+            }
+            else if (m_Combinations.Count == 1)
+            {
+                m_IsDrawn = true;
+            }
+            return false;
+        }
         public UInt64 getFirstCombination()
         {
             return m_Combinations.First();
@@ -60,17 +107,12 @@ namespace Drawer
         {
             if (m_Combinations.Count > 0)
             {
-                m_Combinations.Remove(m_Combinations.First());
+                m_Combinations.RemoveAt(0);
+                if (m_Combinations.Count == 0)
+                {
+                    m_IsDrawn = true;
+                }
             }
-        }
-        public bool hasCombination(UInt64 number)
-        {
-            return m_Combinations.IndexOf(number) != -1;
-        }
-
-        public bool shouldClose()
-        {
-            return m_Combinations.IndexOf(32) != -1;
         }
 
         private void toCombinations(UInt64 number)
@@ -91,6 +133,10 @@ namespace Drawer
             get { return m_Coordinate; }
         }
 
+        public string LineNumber
+        {
+            get { return m_Coordinate.LineNumber; }
+        }
         public UInt64 FullCode
         {
             get { return m_FullCode; }

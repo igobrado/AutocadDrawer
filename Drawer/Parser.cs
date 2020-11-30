@@ -24,6 +24,7 @@ namespace Drawer
                 UInt64 code = UInt64.Parse(numbers[4]);
 
                 lines.Add(new Line(code, new Point(lineNumber, xCoordinate, yCoordinate)));
+
             }
             return lines;
         }
